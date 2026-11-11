@@ -48,7 +48,7 @@ TIM_HandleTypeDef htim1;
 
 /* USER CODE BEGIN PV */
 volatile float voltage = 0;
-volatile float konversi_tegangan = RES_12B/V_REF;
+const float konversi_tegangan = V_REF*RES_12B;
 volatile uint8_t softCounter = 5;
 /* USER CODE END PV */
 
@@ -106,7 +106,10 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+	    if (HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK)
+	    {
+	        voltage = HAL_ADC_GetValue(&hadc1) / konversi_tegangan;
+	    }
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
